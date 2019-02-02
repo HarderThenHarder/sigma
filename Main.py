@@ -22,7 +22,7 @@ def generate_text(screen, text, i, text_color=(100, 200, 100), font_size=15):
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode(SCREEN_WIDTH_HEIGHT, NOFRAME)
+    screen = pygame.display.set_mode(SCREEN_WIDTH_HEIGHT)
     pygame.display.set_caption("SigmaV1.0")
     clock = Clock()
     tick = 0
@@ -70,7 +70,7 @@ def main():
                     pygame.display.update()
 
         if command:
-            if re.match(".*who are you.*", command, re.I) or re.match(".*what's your name.*", command, re.I):
+            if re.match(".*who are you.*", command, re.I) or re.match(".*your name.*", command, re.I):
                 response = "My name is Sigma sir."
             elif re.match(".*movie.*", command, re.I) or re.match(".*film.*", command, re.I):
                 response = "Here are some nice videos if you are VIP, sir."
@@ -115,7 +115,7 @@ def main():
                 web.open_new("http://www.baidu.com")
                 response = "Use this for searching please."
             elif re.match(".*can.*do.*for.*me", command, re.I) or re.match(".*help.*", command, re.I):
-                response = "You can see the manual for some help sir."
+                response = "You can see the manual for some help."
             else:
                 rand = randint(0, 2)
                 if rand == 0:
