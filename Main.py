@@ -46,7 +46,8 @@ def main():
     pygame.display.update()
     first.play()
 
-    introduction = ["You Can Ask Me Like:", "who are you...", "give me some films...", "sing a song for me...", "close my computer..."]
+    introduction = ["You Can Ask Me Like:", "who are you...", "give me some films...", "sing a song for me...", "close my computer...",
+                    "create python file..."]
 
     r = sr.Recognizer()
     speaker = client.Dispatch("SAPI.SpVoice")
@@ -109,6 +110,9 @@ def main():
             elif re.match(".*good night.*", command, re.I) or re.match(".*goodbye.*", command, re.I) or re.match(".*bye.*", command, re.I):
                 pygame.quit()
                 exit()
+            elif re.match(".*python file.*", command, re.I):
+                os.system('echo # new python file > %s' % "C:\\Users\\eve\\Desktop\\" + "new_file.py")
+                response = "A new file has been created on your desktop."
             elif re.match(".*python.*game.*called(.*)", command, re.I):
                 file_name = re.match(".*python.*game.*called(.*)", command, re.I)
                 file_name = file_name.group(1).strip()
