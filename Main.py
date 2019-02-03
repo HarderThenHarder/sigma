@@ -16,8 +16,12 @@ from math import sin
 SCREEN_WIDTH_HEIGHT = [860, 500]
 
 
-def generate_text(screen, text, i, text_color=(50, 200, 50), font_size=17):
+def generate_text(screen, text, i, text_color=(100, 200, 100), font_size=17):
     Pencil.write_text(screen, text, font_pos=[15, font_size * i], font_size=font_size, color=text_color)
+
+
+def generate_help_text(screen, text, i, text_color=(100, 100, 100), font_size=16):
+    Pencil.write_text(screen, text, font_pos=[SCREEN_WIDTH_HEIGHT[0]-200, SCREEN_WIDTH_HEIGHT[1] - font_size * i * 2], font_size=font_size, color=text_color)
 
 
 def main():
@@ -42,6 +46,8 @@ def main():
     pygame.display.update()
     first.play()
 
+    introduction = ["You Can Ask Me Like:", "who are you...", "give me some films...", "sing a song for me...", "close my computer..."]
+
     r = sr.Recognizer()
     speaker = client.Dispatch("SAPI.SpVoice")
     command = None
@@ -54,6 +60,10 @@ def main():
         screen.blit(cover_pic, (0, 0))
         generate_text(screen, "Press SPACE To Speak", 2, text_color=(200, 200, 200))
         Pencil.draw_line(screen, [15, 52], [195, 52], color=(200, 200, 200), width=1)
+
+        for i in range(len(introduction)):
+            generate_help_text(screen, introduction[len(introduction)-1-i], i+1)
+
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -82,6 +92,8 @@ def main():
         if command:
             if re.match(".*who are you.*", command, re.I) or re.match(".*your name.*", command, re.I):
                 response = "My name is Sigma sir."
+            elif re.match(".*hello.*", command, re.I) or re.match(".*hi.*", command, re.I) or re.match(".*nice to meet you.*", command, re.I):
+                response = "Hello, nice to meet you."
             elif re.match(".*movie.*", command, re.I) or re.match(".*film.*", command, re.I):
                 response = "Here are some nice videos if you are VIP, sir."
                 web.open_new("http://www.youku.com")
@@ -95,7 +107,6 @@ def main():
                 response = "GoodNight sir."
                 os.system("SlideToShutDown.exe")
             elif re.match(".*good night.*", command, re.I) or re.match(".*goodbye.*", command, re.I) or re.match(".*bye.*", command, re.I):
-                response = "See you, sir."
                 pygame.quit()
                 exit()
             elif re.match(".*python.*game.*called(.*)", command, re.I):
@@ -125,7 +136,7 @@ def main():
                 web.open_new("http://www.baidu.com")
                 response = "Use this for searching please."
             elif re.match(".*can.*do.*for.*me", command, re.I) or re.match(".*help.*", command, re.I):
-                response = "You can see the manual for some help."
+                response = "Some advices are on the right side..."
             else:
                 rand = randint(0, 2)
                 if rand == 0:
