@@ -5,7 +5,7 @@ from pygame.locals import *
 from sys import exit
 from Pencil import Pencil
 import time
-import speech
+import win32com.client as client
 import re
 from random import randint
 import webbrowser as web
@@ -16,7 +16,7 @@ from math import sin
 SCREEN_WIDTH_HEIGHT = [860, 500]
 
 
-def generate_text(screen, text, i, text_color=(100, 200, 100), font_size=15):
+def generate_text(screen, text, i, text_color=(50, 200, 50), font_size=17):
     Pencil.write_text(screen, text, font_pos=[15, font_size * i], font_size=font_size, color=text_color)
 
 
@@ -27,6 +27,10 @@ def main():
     clock = Clock()
     tick = 0
 
+    first = pygame.mixer.Sound(r"sound\first.wav")
+    start = pygame.mixer.Sound(r"sound\start.wav")
+    over = pygame.mixer.Sound(r"sound\over.wav")
+
     bg = pygame.transform.scale(pygame.image.load(r"wallpaper\bg.jpg"), SCREEN_WIDTH_HEIGHT)
     icon = pygame.image.load(r"wallpaper\icon.jpg")
     cover_pic = pygame.Surface(SCREEN_WIDTH_HEIGHT)
@@ -36,16 +40,20 @@ def main():
     screen.blit(bg, (0, 0))
     screen.blit(cover_pic, (0, 0))
     pygame.display.update()
+    first.play()
+
     r = sr.Recognizer()
+    speaker = client.Dispatch("SAPI.SpVoice")
     command = None
     response = None
 
     while True:
-        clock.tick(30)
+        clock.tick(20)
         cover_pic.set_alpha(80 - 80 * sin(tick))
         screen.blit(bg, (0, 0))
         screen.blit(cover_pic, (0, 0))
-        generate_text(screen, "Press SPACE To Speak", 2)
+        generate_text(screen, "Press SPACE To Speak", 2, text_color=(200, 200, 200))
+        Pencil.draw_line(screen, [15, 52], [195, 52], color=(200, 200, 200), width=1)
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -59,14 +67,16 @@ def main():
                     exit()
 
                 elif event.key == K_SPACE:
+                    start.play()
                     generate_text(screen, "Say something...", 4)
                     pygame.display.update()
                     with sr.Microphone() as source:
                         audio = r.listen(source)
-                    generate_text(screen, "Wait...", 6)
+                    over.play()
+                    generate_text(screen, "Wait...", 5.5)
                     pygame.display.update()
                     command = r.recognize_google(audio, language="en-US")
-                    generate_text(screen, command, 8)
+                    generate_text(screen, command, 7)
                     pygame.display.update()
 
         if command:
@@ -126,9 +136,9 @@ def main():
                     response = "Sorry, I don't know."
 
             time.sleep(1)
-            generate_text(screen, response, 10)
+            generate_text(screen, response, 8.5)
             pygame.display.update()
-            speech.say(response)
+            speaker.Speak(response)
             time.sleep(1)
             command = None
 
