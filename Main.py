@@ -86,14 +86,17 @@ def main():
                     over.play()
                     generate_text(screen, "Wait...", 5.5)
                     pygame.display.update()
-                    command = r.recognize_google(audio, language="en-US")
+                    try:
+                        command = r.recognize_google(audio, language="en-US")
+                    except:
+                        command = "<Can't Recognize...>"
                     generate_text(screen, command, 7)
                     pygame.display.update()
 
         if command:
             if re.match(".*who are you.*", command, re.I) or re.match(".*your name.*", command, re.I):
                 response = "My name is Sigma sir."
-            elif re.match(".*hello.*", command, re.I) or re.match(".*hi.*", command, re.I) or re.match(".*nice to meet you.*", command, re.I):
+            elif re.match(".*hello.*", command, re.I) or re.match(".*hi.*", command, re.I):
                 response = "Hello, nice to meet you."
             elif re.match(".*movie.*", command, re.I) or re.match(".*film.*", command, re.I):
                 response = "Here are some nice videos if you are VIP, sir."
@@ -141,6 +144,8 @@ def main():
                 response = "Use this for searching please."
             elif re.match(".*can.*do.*for.*me", command, re.I) or re.match(".*help.*", command, re.I):
                 response = "Some advices are on the right side..."
+            elif command == "<Can't Recognize...>":
+                response = "I didn't hear you clearly."
             else:
                 rand = randint(0, 2)
                 if rand == 0:
