@@ -96,6 +96,8 @@ def main():
         if command:
             if re.match(".*who are you.*", command, re.I) or re.match(".*your name.*", command, re.I):
                 response = "My name is Sigma sir."
+            elif re.match(".*siri.*", command, re.I):
+                response = "I'm not Siri."
             elif re.match(".*hello.*", command, re.I) or re.match(".*hi.*", command, re.I):
                 response = "Hello, nice to meet you."
             elif re.match(".*movie.*", command, re.I) or re.match(".*film.*", command, re.I):
@@ -161,6 +163,7 @@ def main():
             speaker.Speak(response)
             time.sleep(1)
             command = None
+            first.play()
 
         tick += 0.05
         pygame.display.update()
