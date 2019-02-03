@@ -36,7 +36,7 @@ def main():
     over = pygame.mixer.Sound(r"sound\over.wav")
 
     bg = pygame.transform.scale(pygame.image.load(r"wallpaper\bg.jpg"), SCREEN_WIDTH_HEIGHT)
-    icon = pygame.image.load(r"wallpaper\icon.jpg")
+    icon = pygame.image.load(r"wallpaper\icon.ico")
     cover_pic = pygame.Surface(SCREEN_WIDTH_HEIGHT)
     cover_pic.fill(color=(10, 10, 10))
     cover_pic.set_alpha(10)
